@@ -1,0 +1,28 @@
+/* static/src/css/styles.css */
+.row {
+    border: 2px solid black;
+    text-align: center;
+    padding: 10px;
+    width: 830px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.row span {
+    margin: 0 5px;
+}
+
+.page-break {
+    page-break-before: always;
+    display: block;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+}
+.no-margin {
+    margin: 0 !important;
+    padding: 0 !important;
+}

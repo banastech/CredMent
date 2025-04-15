@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <function name="write" model="ir.model.data">
+        <function name="search" model="ir.model.data">
+            <value
+                eval="[('module', '=', 'base'), ('name', '=', 'main_company')]"
+                />
+        </function>
+        <value eval="{'noupdate': True}" />
+    </function>
+
+	
+    <record id="base.main_company" model="res.company">
+        <field name="journal_processing_fee_id" ref="banas_loan_management.loan_processing_fee_journal"/>
+            <field name="journal_loan_id" ref="banas_loan_management.loan_journal"/>
+            <field name="journal_debit_id" ref="banas_loan_management.loan_debit_note_journal"/>
+            <field name="journal_other_fee_id" ref="banas_loan_management.loan_fees_journal"/>
+            <field name="sales_expense_journal_id" ref="banas_loan_management.loan_sales_expense_journal"/>
+            <!-- <field name="interest_revenue_account_id" ref="l10n_in.1_p2010"/> -->
+            <!-- <field name="transfer_account_id" ref="l10n_in.1_indian_chart_template_standard_liquidity_transfer"/> -->
+            <field name="penalty_account_id" ref="banas_loan_management.account_penalty_income"/>
+            <field name="application_seq_id" ref="banas_loan_management.sequence_name"/>
+            <field name="loan_seq_id" ref="banas_loan_management.sequence_name_2"/>
+        </record>
+
+
+</odoo>

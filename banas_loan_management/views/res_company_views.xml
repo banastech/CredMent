@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_banas_res_users_form" model="ir.ui.view">
+        <field name="name">banas.res.users.form</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+<!--            <page name="access_rights" position="before">
+                <page string="Branches">
+                    <group string="Multi Branches">
+                        <field string="Allowed Branches" name="branch_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                        <field string="Current Branch" name="branch_id" context="{'user_preference': 0}" options="{'no_create': True}"/>
+                        <field string="Branches count" name="branches_count" invisible="0"/>
+                    </group> 
+                </page>
+            </page> -->
+            <page name="access_rights" position="attributes">
+                <attribute name="groups">base.group_system</attribute>
+            </page>
+            <xpath expr="//page/group/group[2]" position="attributes">
+                <attribute name="groups">base.group_system</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_banas_company_form" model="ir.ui.view">
+        <field name="name">banas.loan.company.form</field>
+        <field name="model">res.company</field>
+        <!-- <field name="groups_id" eval="[(6, 0, [ref('base.group_erp_manager')])]"/> -->
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <field name="currency_id" position="attributes">
+                <attribute name="groups">base.group_erp_manager</attribute>
+            </field>
+            <field name="website" position="attributes">
+                <attribute name="placeholder">e.g. https://www.banastech.com</attribute>
+            </field>
+            <div class="o_address_format" position="after">
+                <field name="pan_number"/>
+                <field name="cin_number"/>
+                <field name="tan_number"/>
+                <field name="date_of_registration"/>
+                <field name="account_sale_tax_id"/>
+                <field name="account_purchase_tax_id"/>
+            </div>  
+            <notebook position="inside">
+                <page string="Loan">
+                    <group class="o_label_nowrap" name="first">
+                        <group>
+                            <field name="advance_payment_method"/>
+                            <field name="day_interest_rate" attrs="{'invisible': [('advance_payment_method', '!=', 'partial')], 'required': [('advance_payment_method', '=', 'partial')]}"/>
+                        </group>
+                        <group>
+                            <field name="adv_pay_interest"/>
+                            <field name="processing_fees"/>
+                        </group>
+                        <group string="Products">
+                            <field name="product_process_fee_id"/>
+                            <field name="product_other_fee_id"/>
+                            <field name="product_sales_person_id"/>
+                            <field name="product_debit_note_id"/>
+                        </group>
+                    </group>
+                </page>
+                <page string="Accounting" name="account">
+                    <group class="o_label_nowrap" name="journal_acc">
+                        <group>
+                            <field name="journal_processing_fee_id" domain="[('company_id', '=', id)]"/>
+                            <field name="journal_loan_id" domain="[('company_id', '=', id)]"/>
+                            <field name="journal_debit_id" domain="[('company_id', '=', id)]"/>
+                            <field name="journal_other_fee_id" domain="[('company_id', '=', id)]"/>
+                            <field name="sales_expense_journal_id" domain="[('company_id', '=', id)]"/>
+
+                            <field name="interest_revenue_account_id" domain="[('company_id', '=', id)]"/>
+                            <field name="transfer_account_id" domain="[('company_id', '=', id)]"/>
+                            <field name="penalty_account_id" domain="[('company_id', '=', id)]"/>
+                        </group>
+                        <group>
+                            <field name="application_seq_id"/>
+                            <field name="loan_seq_id"/>
+                        </group>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+    <!-- account.journal -->
+    <record id="view_account_journal_form" model="ir.ui.view">
+        <field name="name">account.journal.form</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='currency_id']" position='after'>
+                <field name="commission_percentage"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

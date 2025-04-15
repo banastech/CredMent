@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	 <record id="account_loan_pay_amount_form" model="ir.ui.view">
+        <field name="name">Pay amount</field>
+        <field name="model">account.loan.pay.amount</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <form string="Pay amount">
+                <group class="o_label_nowrap">
+                    <group>
+                        <field name="loan_id"/>
+                        <field name="payment_journal_id" widget="selection"/>
+                        <field name="date"/>
+                        <field name="cancel_loan"/>
+                        <field name="amount" attrs="{'invisible': [('cancel_loan', '=', True)]}"/>
+                        <field name="fees"/>
+                        <field name="interests_amount"/>
+                        <field name="debit_note_remain_amount"/>
+                        <field name="debit_note_amount" attrs="{'invisible': [('debit_note_remain_amount', '=', 0.00)], 'required': [('debit_note_remain_amount', '!=', 0.00)]}"/>
+                        <field name="debit_note_interest_amount" attrs="{'invisible': [('debit_note_remain_amount', '=', 0.00)], 'required': [('debit_note_remain_amount', '!=', 0.00)]}"/>
+                        <field name="amount_total_debit"/>
+                        <field name="amount_total"/>
+                        <field name="amount_total_cancel" attrs="{'invisible': [('cancel_loan', '!=', True)]}"/>
+                        <field name="currency_id"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="run" string="Run"
+                            type="object" class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_account_loan_pay_amount" model="ir.actions.act_window"> 
+        <field name="name">Pay amount</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">account.loan.pay.amount</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+   
+    
+</odoo>

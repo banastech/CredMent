@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="loan_journal" model="account.journal">
+            <field name="name">Loan Journal</field>
+            <field name="code">ESP</field>
+            <field name="type">sale</field>
+            <!-- <field name="sequence">20</field> -->
+            <field name="default_account_id" ref="other_fee_account_account"/>
+            <field name="profit_account_id" ref="other_fee_account_account"/>
+            <field name="multiple_invoice_type">text</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        <record id="loan_sales_expense_journal" model="account.journal">
+            <field name="name">Loan Sales Person Journal</field>
+            <field name="code">ESPs</field>
+            <field name="type">purchase</field>
+            <field name="sequence">30</field>
+            <field name="default_account_id" ref="other_fee_account_account"/>
+            <field name="profit_account_id" ref="other_fee_account_account"/>
+            <field name="multiple_invoice_type">text</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        <record id="loan_processing_fee_journal" model="account.journal">
+            <field name="name">Processing Fee</field>
+            <field name="code">PROFE</field>
+            <field name="type">sale</field>
+            <field name="multiple_invoice_type">text</field>
+            <field name="default_account_id" ref="fees_account_account"/>
+            <field name="profit_account_id" ref="fees_account_account"/>
+            <field name="sequence">20</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        <record id="loan_fees_journal" model="account.journal">
+            <field name="name">Other Fee</field>
+            <field name="code">FEE</field>
+            <field name="type">sale</field>
+            <field name="multiple_invoice_type">text</field>
+            <field name="default_account_id" ref="other_fee_account_account"/>
+            <field name="profit_account_id" ref="other_fee_account_account"/>
+            <field name="sequence">20</field>
+            <!-- <field name="update_posted" eval="True"/> -->
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        <record id="loan_debit_note_journal" model="account.journal">
+            <field name="name">Debit Notes</field>
+            <field name="code">DBN</field>
+            <field name="type">sale</field>
+            <field name="multiple_invoice_type">text</field>
+            <field name="sequence">20</field>
+            <field name="default_account_id" ref="account_debit_note_revenue"/>
+            <field name="profit_account_id" ref="account_debit_note_revenue"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        <record id="loan_penalty_journal" model="account.journal">
+            <field name="name">Penalty Fee</field>
+            <field name="code">PNF</field>
+            <field name="type">sale</field>
+            <field name="multiple_invoice_type">text</field>
+            <field name="sequence">20</field>
+            <field name="default_account_id" ref="account_penalty_income"/>
+            <field name="profit_account_id" ref="account_penalty_income"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record model="res.partner" id="partner_loan_user">
+            <field name="name">Loan User</field>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="email">user@example.com</field>
+        </record>
+
+        <record id="banas_loan_user" model="res.users">
+            <field name="login">user@example.com</field>
+            <field name="password">admin</field>
+            <field name="partner_id" ref="banas_loan_management.partner_loan_user"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="company_ids" eval="[Command.link(ref('base.main_company'))]"/>
+            <field name="groups_id" eval="[Command.set([])]"/>
+            <field name="signature"><![CDATA[<span>-- <br/>
+        Loan User</span>]]></field>
+        </record>
+
+
+        <record id="bans_loan_officer" model="res.users">
+            <field name="name">Loan Officer</field>
+            <field name="login">officer@example.com</field>
+            <field name="email">officer@example.com</field>
+        </record> 
+         <record id="bans_loan_manager" model="res.users">
+            <field name="name">Loan Manager</field>
+            <field name="login">manager@example.com</field>
+            <field name="email">manager@example.com</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,729 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id = "view_banas_loan_tree" model = "ir.ui.view">
+            <field name="name">banas.loan.tree</field>
+            <field name="model">banas.loan</field>
+            <field name="arch" type = "xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="type_id"/>
+                    <field name="start_date"/>
+                    <field name="date_maturity"/>
+                    <field name="loan_amount" sum="Total"/>
+                    <field name="company_id" optional='hide'/>
+                    <field name="is_leasing" optional='hide'/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="banas_loan_no_create_tree" model="ir.ui.view">
+            <field name="name">banas.loan.no.create.tree</field>
+            <field name="model">banas.loan</field>
+            <field name="inherit_id" ref="banas_loan_management.view_banas_loan_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <tree position="attributes">
+                    <attribute name="create">0</attribute>
+                </tree>
+            </field>
+        </record>
+
+      <!--   <record id="banas_loan_management.banas_loan_action" model="ir.actions.act_window">
+            <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('banas_loan_management.view_banas_loan_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('banas_loan_management.view_banas_loan_form')})]"/>
+         </record>
+     -->
+
+     <record id = "view_banas_loan_form" model="ir.ui.view">
+        <field name="name">banas.loan.from</field>
+        <field name="model">banas.loan</field>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+
+            <form string="Loan" create="0" >
+                <header >
+                    <button name="compute_lines" type="object"
+                            string="Compute items" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+                    <button name="compute_lines" type="object"
+                            string="Compute items" groups="banas_loan_management.group_banas_loan_manager" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+                    <button name="action_account_payments" type="object"
+                            string="Transfer Payment" attrs="{'invisible': [('state', 'not in', ['approved', 'payment'])]}"
+                             groups="banas_loan_management.group_banas_loan_officer,banas_loan_management.group_banas_loan_manager"/> 
+                    <button name="action_register_payments"
+                            type="object"
+                            attrs="{'invisible': [('state', '!=', 'posted')]}"
+                            string="Register Payment"/>
+                    <button name="action_account_debit_note_payments"
+                            type="object"
+                            attrs="{'invisible': ['|', ('state', '!=', 'posted'), ('debit_note_remain_amount', '&lt;=', 0)]}"
+                            string="Debit Note Payment"/>
+                    <button name="action_send_for_approval" string="Send for Approval" class="oe_highlight" type="object" states="draft"/>
+                    <button name="action_approve" string="Approve" type="object" states="approval" groups="banas_loan_management.group_banas_loan_manager"/>
+                    <button string="Reject" class="btn-primary" name="action_reject" type="object" states="approval" groups="banas_loan_management.group_banas_loan_manager"/>
+                    <button string="Set to Draft" name="action_draft" type="object" states="approved,rejected"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet class="expandable-sheet">
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_view_account_payments" class="oe_stat_button" icon="fa-pencil-square-o">
+                            <field name="payment_count" widget="statinfo" string="Payments"/>
+                        </button>
+                        <button type="object" class="oe_stat_button" icon="fa-paperclip" name="action_see_attachments" context="{'default_partner_id': active_id}">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="total_attachment"/>
+                                </span>
+                                <span class="o_stat_text">Documents</span>
+                            </div>
+                        </button>
+                        <button name="action_view_invoice" class="oe_stat_button" icon="fa-pencil-square-o" type="object" string="Expences"> 
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="invoice_count"/>
+                                </span>
+                                <span class="o_stat_text">Expences</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_button_box" name="button_box" >
+                        <button name="action_view_fee_invoice" class="oe_stat_button" icon="fa-pencil-square-o" type="object">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="fee_invoice_count"/>
+                                    <field name="fee_invoice_ids" invisible = '1'/>
+                                </span>
+                                <span class="o_stat_text">Fees</span>
+                            </div>
+                        </button>
+
+                        <button type="object"  name="action_view_disbursement" class="oe_stat_button" string="Disbursement" icon="fa-pencil-square-o">
+                        </button>
+                        <button name="view_account_moves" class="oe_stat_button" icon="fa-bars" type="object" string="Moves"/>
+                    </div>
+                    <div class="oe_button_box" name="button_box" invisible = 'False'>
+                        <button name="view_debit_notes" class="oe_stat_button" icon="fa-pencil-square-o" type="object" string="Debit Notes" attrs="{'invisible': [('debit_note_remain_amount', '&lt;=', 0)]}">
+                            <field name="debit_note_count" widget="statinfo" string="Debit Notes"/>
+                        </button>
+                        <button name="action_receive_payments" class="oe_stat_button" icon="fa-inr" type="object" string="Receive Payment" attrs="{'invisible': [('state', '!=', 'posted')]}"/> 
+
+                        <button name="action_cancel_payments" class="oe_stat_button" icon="fa-inr" type="object" string="Cancel Payment" attrs="{'invisible': [('state', '!=', 'posted')]}"/>  
+                          
+                        </div>
+                        <h2 class="oe_title">
+                            <span class="o_form_label">Number #</span>
+                            <field name="name" class='white-space: nowrap;   '  force_save="1"/>
+
+                        </h2>    
+
+                        <group id ="first">
+                            <group>
+                                <field name="partner_id" attrs="{'readonly':[('state','!=','draft')]}"/>
+                                <field name='contact_id'/>
+                                <field name='currency_id'/>
+                                <field name='address' readonly="0" invisible="1" force_save="1"/>
+                                <field name='payment_partner_id' domain="[('parent_id', '=', False)]"/>
+                                <field name='company_id'/>
+                                <field name='type_id' options="{'no_create': 1, 'no_edit': 1, 'no_open': 1}"
+                                    attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                    <field name='type' invisible="1"/>
+                                    <field name='loan_type' string="Interest Type" force_save="1" invisible="1"/>
+                                    <!-- <field name='branch_id' options="{'no_create': 1, 'no_edit': 1, 'no_open': 1}"/> -->
+                                    <!-- <field name="loan_amount"/> -->
+                                </group>
+                                <group>
+                                    <field name="application_number" attrs="{'invisible': [('application_number', '=', False)]}"/>
+                                    <field name='date_application' attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                    <field name='start_date'/>
+                                    <field name='date_maturity'/>
+                                    <field name='payments_amount'/>
+                                    <field name='credit_invoice_id'/>
+                                    <field name='payment_id' invisible="1"/>
+                                </group>
+                            </group>
+                            <notebook>
+                                <page string="General" >
+                                    <group id="first" class="o_label_nowrap" >
+                                        <group >
+                                            <field name='applied_amount' string="Loan Amount" invisible="1"/>
+                                            <field name='loan_amount'  String ="Applied_amount"
+                                             attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                             <field name='check_amount_in_words' String ="Applied_amount"/>
+                                             <field name='asset_valuation'  attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                             <field name='rate' attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                             <field name='periods' attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                             <label for="method_period" />
+                                             <div>
+                                                <field name="method_period" class="oe_inline" style="width: 50%" 
+                                                 attrs="{'readonly': [('state', '!=', 'draft')]}"/> - 
+                                                 <field name="interval" class="oe_inline" style="width: 50%" 
+                                                     attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                 </div>                
+                                             </group>
+                                             <group>
+                                                <field name="rate_type" invisible="1"/>
+                                                <field name="loan_type" invisible="1"/>
+                                                <field name="rate_period"/>
+                                                <field name="residual_amount" invisible="1"/>
+                                                <field name="round_on_end" invisible="1"/>
+                                                <field name="payment_on_first_period" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                                <field name="select_loan_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                <field name="first_installment_date" attrs="{ 'invisible': [('select_loan_date', '=', False)],'readonly': [('state', '!=', 'draft')]}" string = "First Installment date" />
+                                                <!-- <field name="total_delay_interest" attrs="{ 'invisible': [('select_loan_date', '=', False)],'readonly': [('state', '!=', 'draft')]}"/> -->
+
+                                            </group>
+                                        </group>
+                                        <group id="second" invisible="1">
+                                            <group>
+                                                <field name="period_id" invisible="0"/>
+                                            </group>
+                                            <group>
+                                                <field name="is_leasing" invisible="1"/>
+                                            </group>
+                                        </group>
+                                        <group id="third"  attrs="{'invisible':[('state', '=', 'draft')]}" class="o_label_nowrap">
+                                            <group>
+                                                <separator string="Payments" style="color: #BEADFA; font-size: 20px;"/>
+                                                <field name="total_payment_amount"/>
+                                                <field name="payment_amount"/>
+                                                <field name="pending_payment_amount"/>
+                                                <field name="pending_principal_amount"/>
+                                            </group>
+                                            <group>
+                                                <separator string="Interests" style="color: #BEADFA; font-size: 20px;"/>
+                                                <field name="total_interests_amount"/>
+                                                <field name="interests_amount"/>
+                                                <field name="pending_interests_amount"/>
+                                            </group>
+                                            <group>
+                                                <field name="fixed_amount"/>
+                                                <field name="fixed_loan_amount"/>
+                                                <field name="fixed_periods"/>
+                                                <field name="total_instl"/>
+                                                <field name="total_advance"/>
+                                            </group>
+                                            <group>
+                                                <field name="debit_note_amount"/>
+                                                <field name="debit_note_paid_amount"/>
+                                                <field name="debit_note_remain_amount"/>
+                                                <field name="debit_note_interest_amount"/>
+                                            </group>
+                                        </group>
+                                        <separator string="Installments" style="color: #BEADFA; font-size: 20px;"/>
+                                        <field name="line_ids" readonly="1" > 
+                                            <tree>
+                                                <field name="sequence" invisible="1" />
+                                                <field name="seq_name" />
+                                                <field name="date" />
+                                                <!-- <filter name = "loan_type"/> -->
+                                                <field name="rate" invisible="1" />
+                                                <field name="pending_principal_amount" />
+                                                <field name="payment_amount" sum="Total payments" string="Payment Amount" optional="show"/>
+                                                <!-- <field name="delay_payment_amount" sum="Total payments"  string ="Payment Amount"/> -->
+                                                <field name="principal_amount" sum="Total Principal Amount" />
+                                                <!-- <field name="total_delay_interest" optional="hide"/>
+                                                <field name="delay_interests_amount" sum="Total interests" string="Interest Amount" /> -->
+                                                <field name="interests_amount" sum="Total interests" string = "Interest Amount" optional="show"/>
+                                                <field name="final_pending_principal_amount" invisible="1"/>
+                                                <field name="instl_no" invisible="1" />
+                                                <field name="advance_no" invisible="1"/>
+                                                <field name="penalty_charges" optional="show"/>
+                                                <field name="amount_total" optional="show"/>
+                                                <field name="type" optional="hide"/>
+                                                <field name="state" optional="hide"/>
+                                        <!-- <field name="long_term_pending_principal_amount"
+                                        attrs="{'invisible': [('long_term_loan_account_id', '=', False)]}"/> -->
+                                        <!-- <field name="long_term_principal_amount"
+                                        attrs="{'invisible': [('long_term_loan_account_id', '=', False)]}"/> -->
+                                        <field name="long_term_loan_account_id" invisible="1"/>
+                                        <field name="loan_state" invisible="1"/>
+                                        <field name="is_leasing" invisible="1"/>
+                                        <field name="has_invoices" invisible="1"/>
+                                        <field name="has_moves" invisible="1"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <button name="view_account_values" string="Entries"
+                                            type="object" icon="fa-book" attrs="{'invisible': [('state', '!=', 'done')]}" groups="banas_loan_management.group_banas_loan_officer,banas_loan_management.group_banas_loan_manager"/>
+                                            <button name="view_process_values" string="Payment"
+                                                type="object" icon="" attrs="{'invisible': ['|', '|',('loan_state', '!=', 'posted'), ('state', '=', 'done'),('state','=','cancelled')]}" groups="banas_loan_management.group_banas_loan_officer,banas_loan_management.group_banas_loan_manager"/>
+                                            </tree>
+                                        </field>
+                                    </page>
+
+                                    <page name="gold" string="Gold Details" attrs="{'invisible': [('type', '!=', 'gold')]}">
+                                        <separator string="Jewellery" style="color: #BEADFA; font-size: 20px;"/>
+                                        <field name="gold_ids" > 
+                                        </field>
+                                        <separator string = "Photograph" style="color: #BEADFA; font-size: 20px;"/>
+                                        <field name="gold_document_ids" mode="kanban" context="{'default_res_model': 'banas.loan','default_res_id': active_id}">
+                                            <form string="Attachments">
+                                             <sheet>
+                                                <label for="name" class="oe_edit_only"/>
+                                                <h1>
+                                                    <field name="name"/>
+                                                </h1>
+                                                <group>
+                                                    <group>
+                                                        <field name="type"/>
+                                                        <field name="type_id"/>
+                                                        <!-- <field name="loan_id" invisible="1"/> -->
+                                                        <field name="datas" filename="datas_fname" attrs="{'invisible':[('type','=','url')]}"/>
+                                                        <field name="url" widget="url" attrs="{'invisible':[('type','=','binary')]}"/>
+                                                        <field name="mimetype" groups="base.group_no_one" invisible="1"/>
+                                                        <field name="priority" widget="priority"/>
+                                                    </group>
+                                                    <group string="Attached To" groups="base.group_no_one" invisible="1">
+                                                        <field name="res_model" readonly="0"/>
+                                                        <field name="res_field"/>
+                                                        <field name="res_id" readonly="0"/>
+                                                        <field name="res_name"/>
+                                                        <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                                                        <field name="public"/>
+                                                    </group>
+                                                    <group string="History" groups="base.group_no_one" attrs="{'invisible':[('create_date','=',False)]}" invisible="1">
+                                                        <label for="create_uid" string="Creation"/>
+                                                        <div name="creation_div">
+                                                            <field name="create_uid" readonly="1" class="oe_inline"/> on
+                                                            <field name="create_date" readonly="1" class="oe_inline"/>
+                                                        </div>
+                                                    </group>
+                                                    <group name="description_group" string="Description" groups="base.group_no_one" colspan="4" invisible="1">
+                                                        <field name="description" nolabel="1"/>
+                                                    </group>
+                                                    <group groups="base.group_no_one" string="Indexed Content" colspan="4" invisible="1">
+                                                        <field name="index_content" nolabel="1"/>
+                                                    </group>
+                                                </group>
+                                            </sheet>
+                                        </form>
+                                    </field>
+                                </page>
+                                <page string="Vehicle" attrs="{'invisible': [('type', '!=', 'vehicle')]}">
+                                    <separator string="RTO DETAIL" style="color: #BEADFA; font-size: 20px;"/>
+                                    <group >
+                                        <group>
+                                            <field name="rto_id"/>
+                                        </group>
+                                        <group>
+                                        </group>
+                                    </group>
+                                    <separator string="Vehicle Info" style="color: #BEADFA; font-size: 20px;"/>
+                                    <group>
+                                        <group>
+                                            <field name="model_id" attrs="{'required': [('type_id', '=', 'vehicle')]}"/>
+                                            <field name="wheel_base"/>
+                                            <field name="ownership_id" attrs="{'required': [('type_id', '=', 'vehicle')]}" options="{'no_create': True, 'no_open': True}"/>
+                                        </group>
+                                        <group>
+                                            <field name="chassis_number" attrs="{'required': [('type_id', '=', 'vehicle')]}"/>
+                                            <field name="reg_number" attrs="{'required': [('type_id', '=', 'vehicle')]}"/>
+                                            <field name="engine_number" attrs="{'required': [('type_id', '=', 'vehicle')]}"/>
+                                        </group>
+                                    </group>
+                                    <separator string="NOC" style="color: #BEADFA; font-size: 20px;"/>
+                                    <group>
+                                        <group>
+                                            <field name="date_noc"/>
+                                        </group>
+                                        <group>
+                                            <field name="noc_ref_number"/>
+                                        </group>
+                                    </group>
+                                    <separator string="Signature/Dates" style="color: #BEADFA; font-size: 20px;"/>
+                                    <group>
+                                        <group>
+                                            <field name="registered_owner_sign" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;registered_owner_sign&quot;, &quot;size&quot;: [90, 90]}"/>
+                                            <field name="date_sign_of_owner"/>
+                                            <field name="date_endorsement"/>
+                                        </group>
+                                        <group>
+                                            <field name="financier_sign" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;: &quot;financier_sign&quot;, &quot;size&quot;: [90, 90]}"/>
+                                            <field name="date_sign_of_financier"/>
+                                            <field name="partner_bank_id" context="{'default_partner_id': partner_id}"/>
+                                        </group>
+                                    </group>
+                                </page>
+                                <page string="Proof">
+                                    <group>
+                                        <group>
+                                            <field name="gaurenter_id"/>
+                                            <field name="gaurenter_id2"/>
+                                        </group>
+                                        <group>
+                                        </group>
+                                    </group>
+                                </page>
+                                <page string="Fees/Expences">
+                                    <group class="o_label_nowrap">
+                                        <group>
+                                            <field name="sales_person_id" domain="[('partner_type', '=', 'salesperson')]" context="{'default_partner_type': 'salesperson'}" options="{'no_quick_create': True}"/>
+                                            <field name="sales_expense_journal_id" attrs="{'invisible': [('sales_person_id', '=', False)], 'required': [('sales_person_id', '!=', False)]}"/>
+                                            <field name="commission_percentage" attrs="{'invisible': [('sales_person_id', '=', False)], 'required': [('sales_person_id', '!=', False)]}"/>
+                                        </group>
+                                        <group>
+                                            <field name="fee_deduct_from_payment"/>
+                                            <field name="fees_invoice_id"/>
+                                            <field name="journal_processing_fee_id"/>
+                                            <field name="journal_other_fee_id" />
+                                            <field name="process_fee" attrs="{'required': [('fee_deduct_from_payment', '!=', False)]}"/>
+                                            <field name="other_fee" attrs="{'required': [('fee_deduct_from_payment', '!=', False)]}"/>
+                                        </group>
+                                    </group>
+                                    <field name="fees_ids" nolabel="1">
+                                        <tree editable="bottom">
+                                            <field name="product_id"/>
+                                            <field name="account_id"/>
+                                            <field name="price_unit" string="Loan Amount"/>
+                                            <field name="charges"/>
+                                            <field name="price_total" sum="Total"/>
+                                        </tree>
+                                        <form>
+                                            <group>
+                                                <group>
+                                                    <field name="product_id"/>
+                                                    <field name="account_id"/>
+                                                    <field name="price_unit"/>
+                                                    <field name="charges"/>
+                                                    <field name="price_total" sum="Total"/>
+                                                </group>
+                                                <group>
+                                                </group>
+                                            </group>
+                                        </form>
+                                    </field>
+                                </page>
+                                <page string="Account">
+                                    <group>
+                                        <group>
+                                            <field name='journal_id'/>
+                                            <field name='debit_journal_id'/>
+                                            <field name='short_term_loan_account_id'/>
+                                            <field name="journal_type" invisible="1"/>
+                                        </group>
+                                        <group>
+                                            <field name='penalty_journal_id'/>
+                                            <field name='interest_expenses_account_id'/>
+                                            <field name="long_term_loan_account_id" invisible="1"/>
+                                            <field name='penalty_account_id'/>
+                                        </group>
+                                    </group>
+                                </page>
+                            </notebook> 
+                        </sheet>
+                        <div class="oe_chatter">
+                            <field name="message_follower_ids" groups="base.group_user"/>
+                            <field name="activity_ids"/>
+                            <field name="message_ids"/>
+                        </div>
+                    </form>
+                </field>
+            </record>
+
+            <record id="banas_loan_no_create_form" model="ir.ui.view">
+                <field name="name">banas.loan.no.create.form</field>
+                <field name="model">banas.loan</field>
+                <field name="inherit_id" ref="banas_loan_management.view_banas_loan_form"/>
+                <field name="mode">primary</field>
+                <field name="arch" type="xml">
+                    <form position="attributes">
+                        <attribute name="create">0</attribute>
+                    </form>
+                </field>
+            </record>
+
+            <record id="view_account_loan_search" model="ir.ui.view">
+                <field name="name">banas.loan.search</field>
+                <field name="model">banas.loan</field>
+                <field name="arch" type="xml">
+                    <search>
+                        <field name="name"/>
+                        <separator/>
+                        <filter name="draft" string="New" domain="[('state', '=', 'draft')]" help="Draft Loans"/>
+                        <filter name="waiting" string="Waiting Approval" domain="[('state', '=', 'approval')]" help="Waiting Approval"/>
+                        <filter name="approved" string="Approved" domain="[('state', '=', 'approved')]" help="Approved Loans"/>
+                        <filter name="posted" string="Running" domain="[('state', '=', 'posted')]" help="Running Loans"/>
+                        <filter name="rejected" string="Rejected" domain="[('state', '=', 'rejected')]" help="Rejected Loans"/>
+                    </search>
+                </field>
+            </record>   
+
+
+            <record id="account_loan_line_form" model="ir.ui.view">
+                <field name="name">account.loan.line.form</field>
+                <field name="model">account.loan.line</field>
+                <field name="arch" type="xml">
+                    <form string = "Line Id">
+                        <group >
+
+                            <field name="instl_no" string = "Installment Num"  />
+                            <field name="rate"/>
+                            <field name="date" invisible="True"/>
+                            <!--  --> 
+
+                            <field name="currency_id" groups="base.group_multi_currency" invisible = "0"/>
+                            <field name="pending_principal_amount" string = "Pending Principal Amount"/>
+                            <field name="payment_amount" string = "Payment Amount"/>
+                            <field name="principal_amount" string = "Principal Amount"/>
+                            <field name="interests_amount" string = "Interests Amounts"/>
+                            <field name="final_pending_principal_amount" />
+                        </group>          
+                    </form>
+                </field>
+            </record>
+
+            <record id="banas_loan_action" model="ir.actions.act_window">
+                <field name="name">Loans</field>
+                <field name = "type">ir.actions.act_window</field>
+                <field name="res_model">banas.loan</field>
+                <field name="view_mode">tree,form</field>
+                <field name="target">current</field>
+                <field name = "context">{}</field>
+           <!--  <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('account_loan_no_create_tree')}),
+                (0, 0, {'view_mode': 'form', 'view_id': ref('account_loan_no_create_form')})]"/> -->
+                <field name="help" type="xml">
+                    <p class="o_view_nocontent_smiling_face">
+                        Create Loan Documents
+                    </p>
+                </field>
+            </record>
+
+            <record id="banas_loan_report_statement" model="ir.actions.server">
+                <field name="name">Loan Statement</field>
+                <field name="state">code</field>
+                <field name="type">ir.actions.server</field>
+                <field name="model_id" ref="model_banas_loan"/>
+                <field name="binding_model_id" ref="model_banas_loan"/>
+                <field name="binding_view_types">list,form</field>
+                <field name="code">
+                    if records:
+                    action = records.action_loan_statement()
+                </field>
+            </record>
+            <!-- <record id="banas_loan_partner_ledger" model="ir.actions.server">
+                <field name="name">Partner Ledger</field>
+                <field name="state">code</field>
+                <field name="type">ir.actions.server</field>
+                <field name="model_id" ref="model_banas_loan"/>
+                <field name="binding_model_id" ref="model_banas_loan"/>
+                <field name="binding_view_types">list,form</field>
+                <field name="code">
+                    if records:
+                    action = records.partner_ledger()
+                </field>
+            </record> -->
+
+            <menuitem id="menu_account_loan_root" 
+              name="Loans" 
+              sequence="54"
+              web_icon="banas_loan_management,static/description/icon.png"/>
+              <menuitem id="menu_banas_loan"
+                name="Loans" 
+                action = "banas_loan_action" 
+                parent="menu_account_loan_root" 
+                sequence="10"/> 
+
+                <record id="view_account_loan_gold_tree" model="ir.ui.view">
+                    <field name="name">banas.gold.line.tree</field>
+                    <field name="model">banas.gold.line</field>
+                    <field name="arch" type="xml">
+                        <tree string="Gold Tree" editable="bottom">
+                            <field name="product_id" 
+                                domain="[('categ_id', '=', %(banas_loan_management.product_gold2)d)]" context="{'default_categ_id': %(banas_loan_management.product_gold2)d}"/>
+                                <field name="product_qty" sum="Total Quantity"/>
+                                <field name="uom_id" invisible="1"/>
+                                <field name="gross_weight" sum="Total Gross Weight"/>
+                                <field name="stone_weight" sum="Total Stone Weight"/>
+                                <field name="net_weight" sum="Total Net Weight"/>
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </record>
+
+                    <record id="view_account_loan_gold_form" model="ir.ui.view">
+                        <field name="name">banas.gold.line.form</field>
+                        <field name="model">banas.gold.line</field>
+                        <field name="arch" type="xml">
+                            <form string="Gold Form">
+                                <group>
+                                    <field name="product_id"/>
+                                    <field name="name"/>
+                                    <field name="uom_id"/>
+                                    <field name="product_qty"/>
+                                </group>
+                            </form>
+                        </field>
+                    </record>
+                    <record id="view_banas_loan_vehicle_owner_number_tree" model="ir.ui.view">
+                        <field name="name">banas.loan.vehicle.ownership.tree</field>
+                        <field name="model">banas.loan.vehicle.ownership</field>
+                        <field name="arch" type="xml">
+                            <tree string="" editable="bottom">
+                                <field name="name"/>
+                                <field name="company_id"/>
+                                <!-- <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/> -->
+                            </tree>
+                        </field>
+                    </record>
+
+                    <record id="view_banas_loan_vehicle_ownership_form" model="ir.ui.view">
+                        <field name="name">banas.loan.vehicle.ownership.form</field>
+                        <field name="model">banas.loan.vehicle.ownership</field>
+                        <field name="arch" type="xml">
+                            <form string="Loan Type">
+                                <group>
+                                    <field name="name"/>
+                                </group>
+                            </form>
+                        </field>
+                    </record>
+                    <record id="action_banas_loan_vehicle_ownership" model="ir.actions.act_window">
+                        <field name="name">Ownership</field>
+                        <field name="res_model">banas.loan.vehicle.ownership</field>
+                        <!-- <field name="view_type">form</field> -->
+                        <field name="view_mode">tree,form</field>
+                        <field name="domain">[]</field>
+                        <field name="context">{}</field>
+                    </record>
+
+                    <record id="action_banas_loan_doc_type" model="ir.actions.act_window">
+                        <field name="name">Document Types</field>
+                        <field name="res_model">banas.loan.document.type</field>
+                        <!-- <field name="view_type">form</field> -->
+                        <field name="view_mode">tree,form</field>
+                        <field name="domain">[]</field>
+                        <field name="context">{}</field>
+                    </record>
+
+                    <record id="view_banas_loan_type_tree" model="ir.ui.view">
+                        <field name="name">banas.loan.type.tree</field>
+                        <field name="model">banas.loan.type</field>
+                        <field name="arch" type="xml">
+                            <tree string="Loan Type">
+                                <field name="name"/>
+                                <field name="cal_method"/>
+                                <field name="type"/>
+                                <field name="company_id"/>
+                            </tree>
+                        </field>
+                    </record>
+
+                    <record id="view_banas_loan_type_form" model="ir.ui.view">
+                        <field name="name">banas.loan.type.form</field>
+                        <field name="model">banas.loan.type</field>
+                        <field name="arch" type="xml">
+                            <form string="Loan Type">
+                                <sheet>
+                                    <group>
+                                        <group>
+                                            <field name="name"/>
+                                            <field name="cal_method"/>
+                                            <field name="type"/>
+                                            <field name="product_tmpl_id" readonly="1"/>
+                                            <field name="penalty_journal_id" required="1"/>
+                                        </group>
+                                        <group>
+                                            <field name="journal_id"/>
+                                            <field name="debit_journal_id"/>
+                                            <field name="journal_processing_fee_id"/>
+                                            <field name="journal_other_fee_id"/>
+                                            <field name="company_id"/>
+                                        </group>
+                                    </group>
+                                    <notebook>
+                                        <page string="Documents">
+                                            <group>
+                                                <field name="document_type_ids" widget="many2many_tags"/>
+                                            </group>
+                                        </page>
+                                        <page string="Fees">
+                                            <field name="fees_ids">
+                                                <tree editable="bottom">
+                                                    <field name="product_id"/>
+                                                    <field name="account_id"/>
+                                                    <field name="charges"/>
+                                                </tree>
+                                                <form>
+                                                    <group>
+                                                        <group>
+                                                            <field name="product_id"/>
+                                                            <field name="account_id"/>
+                                                            <field name="charges"/>
+                                                        </group>
+                                                        <group>
+                                                        </group>
+                                                    </group>
+                                                </form>
+                                            </field>
+                                        </page>
+                                    </notebook>
+                                </sheet>
+                            </form>
+                        </field>
+                    </record>
+                    <record id="action_banas_loan_type" model="ir.actions.act_window">
+                        <field name="name">Types</field>
+                        <field name="res_model">banas.loan.type</field>
+                        <!-- <field name="view_type">form</field> -->
+                        <field name="view_mode">tree,form</field>
+                        <field name="domain">[]</field>
+                        <field name="context">{}</field>
+                    </record>
+
+
+                    <record id="fleet_vehicle_view" model="ir.ui.view">
+                        <field name="name">Models</field>
+                        <field name="model">fleet.vehicle.model</field>
+                        <field name="inherit_id" ref="fleet.fleet_vehicle_model_view_form"/>
+                        <field name="arch" type="xml">
+                            <xpath   expr="//page[@name='information']" position="attributes">
+                                <attribute name="invisible">1</attribute>
+                            </xpath>
+                            <xpath expr="//field[@name='brand_id']" position="attributes">
+                                <attribute name="string">Make</attribute>
+                            </xpath>
+                            <xpath expr="//field[@name='vehicle_type']" position="before">
+                             <field name="wheel_base" string= "Wheel Base" placeholder="e.g. 3050mm"/>
+                         </xpath>
+                         <xpath expr="//field[@name='vehicle_type']" position="attributes">
+                            <attribute name="invisible">1</attribute>
+                        </xpath>
+                        <xpath expr="//field[@name='category_id']" position="attributes">
+                            <attribute name="invisible">1</attribute>
+                        </xpath>
+                    </field>
+
+                </record>
+
+                <record id="view_banas_loan_period_tree" model="ir.ui.view">
+                    <field name="name">banas.loan.period.tree</field>
+                    <field name="model">banas.loan.period</field>
+                    <field name="arch" type="xml">
+                        <tree string="Loan Document Type" editable="bottom">
+                            <field name="name"/>
+                            <field name="period"/>
+                        </tree>
+                    </field>
+                </record>
+
+                <record id="view_banas_loan_period_form" model="ir.ui.view">
+                    <field name="name">banas.loan.period.form</field>
+                    <field name="model">banas.loan.period</field>
+                    <field name="arch" type="xml">
+                        <form string="Loan Document Type">
+                            <group>
+                                <field name="name"/>
+                                <field name="period"/>
+                            </group>
+                        </form>
+                    </field>
+                </record>
+
+
+
+
+
+
+            </data>
+        </odoo>

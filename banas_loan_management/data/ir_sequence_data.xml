@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  
+    <record id="sequence_name" model="ir.sequence">
+        <field name="name">Account loan sequence</field>
+        <field name="name">Account loan app sequence</field>
+        <field name="code">account.loan.app</field>
+        <field name="prefix">APP/%(month)s/%(year)s/</field>
+        <field name="padding">6</field>
+        <field name="implementation">no_gap</field>
+        <field name="number_increment">1</field>
+        <field name="company_id" ref="base.main_company"/>
+        
+    </record>
+
+    <record id="sequence_name_2" model="ir.sequence">
+        <field name="name">Create loan sequence</field>
+        <field name="name">Create loan app sequence</field>
+        <field name="code">create.loan.app</field>
+        <field name="prefix">LOAN/%(month)s/%(year)s/</field>
+        <field name="padding">6</field>
+        <field name="implementation">no_gap</field>
+        <field name="number_increment">1</field>
+        <field name="company_id" ref="base.main_company"/>
+        
+    </record>
+    <record id="seq_cutomer" model="ir.sequence">
+        <field name="name">Customer Sequence</field>
+        <field name="code">res.partner</field>
+        <field name="prefix">CUST/%(month)s/%(year)s/</field>
+        <field name="padding">6</field>
+        <field name="implementation">no_gap</field>
+        <field name="number_increment">1</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>   
+  
+    <function name="write" model="ir.model.data">
+        <function name="search" model="ir.model.data">
+            <value
+              eval="[('module', '=', 'base'), ('name', '=', 'main_company')]"
+              />
+        </function>
+        <value eval="{'noupdate': False}" />
+    </function>
+
+
+
+   <!--  <record id="sequence_name_3" model="ir.sequence">
+        <field name="name">Create amendment sequence</field>
+        <field name="name">Create loan app sequence</field>
+        <field name="code">loan.amendment</field>
+        <field name="prefix">LAM/%(month)s/%(year)s/</field>
+        <field name="padding">6</field>
+        <field name="implementation">no_gap</field>
+        <field name="number_increment">1</field>
+        
+    </record> -->
+
+  
+
+</odoo>
+
+

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="fees_account_account" model="account.account">
+            <field name="code">210401</field>
+            <field name="name">Processing Fee</field>
+            <field name="account_type">income_other</field>
+            <field name="reconcile" eval="False"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        <record id="other_fee_account_account" model="account.account">
+            <field name="code">210402</field>
+            <field name="name">Other Fee</field>
+            <field name="account_type" >liability_current</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        <record id="account_debit_note_revenue" model="account.account">
+            <field name="code">210311</field>
+            <field name="name">Debit Note Revenue</field>
+            <field name="account_type" >income_other</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        <record id="account_penalty_income" model="account.account">
+            <field name="name">Penalty Revenue</field>
+            <field name="code">200310</field>
+            <field name="account_type" >income_other</field>
+            <!-- <field name="reconcile" eval="False"/> -->
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+    </data>
+</odoo>
