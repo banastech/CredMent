@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="vehicle_ownership_1" model="banas.loan.vehicle.ownership">
+            <field name="name">New</field>
+        </record>
+        <record id="vehicle_ownership_2" model="banas.loan.vehicle.ownership">
+            <field name="name">2nd Hand</field>
+        </record>
+    </data>
+</odoo>

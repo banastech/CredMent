@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="vehicle_brand_ashok_leylan" model="fleet.vehicle.model.brand">
+            <field name="name">Ashok Leyland</field>
+            <field name="image_128" type="base64" file="banas_loan_management/static/img/ashok_leyland_logo.png"/>
+            <field name="active" eval="True"/>
+        </record>
+        <record id="vehicle_brand_bajaj_auto" model="fleet.vehicle.model.brand">
+            <field name="name">Bajaj Auto</field>
+            <field name="image_128" type="base64" file="banas_loan_management/static/img/bajaj_auto_logo.png"/>
+            <field name="active" eval="True"/>
+        </record>
+        <record id="vehicle_brand_force_motor" model="fleet.vehicle.model.brand">
+            <field name="name">Force Motors</field>
+            <field name="image_128" type="base64" file="banas_loan_management/static/img/force_motors_logo.png"/>
+            <field name="active" eval="True"/>
+        </record>
+        <record id="vehicle_brand_mahindra_and_mahindra" model="fleet.vehicle.model.brand">
+            <field name="name">Mahindra &amp; Mahindra</field>
+            <field name="image_128" type="base64" file="banas_loan_management/static/img/mahindra_logo.png"/>
+            <field name="active" eval="True"/>
+        </record>
+        <record id="vehicle_brand_tata_motors" model="fleet.vehicle.model.brand">
+            <field name="name">Tata Motors</field>
+            <field name="image_128" type="base64" file="banas_loan_management/static/img/tata_motors_logo.png"/>
+            <field name="active" eval="True"/>
+        </record>
+    </data>
+</odoo>

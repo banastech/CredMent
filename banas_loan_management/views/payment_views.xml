@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<odoo>
+     <!-- Register Payment Form  -->
+	<record id="view_account_payment_register_loan_form" model="ir.ui.view">
+        <field name="name">account.payment.register.loan.form</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+        <field name="arch" type="xml">
+            <field name="communication" position="before">
+                <field name="debit_note_amount" attrs="{'invisible': [('loan_payment_type', '!=','debit')]}"/>
+                <field name="debit_note_remain_amount" invisible="1"/>
+                <field name="amount_in_words" invisible="1"/>
+            </field>
+            <xpath expr="//field[@name='payment_date']" position='after'>
+                <field name="payment_amount" attrs="{'invisible': [('loan_payment_type', 'not in', ['multi_installment', 'installment'])]}" readonly="1"/>
+            </xpath>
+            <field name="partner_bank_id" position="after">
+                <field name="loan_id" invisible="1"/>
+                <field name="debit_note_loan_id" invisible="1"/>
+                <field name="loan_line_id" invisible="1"/>
+                <field name="loan_payment_type" invisible="1"/>
+                <field name="fees" attrs="{'invisible': [('loan_payment_type', 'not in', ['multi_installment', 'installment'])]}"/>
+                <field name="fees_debit_note" attrs="{'invisible': [('loan_payment_type', 'not in', ['multi_installment', 'installment'])]}"/>
+            </field>
+            <xpath expr="//field[@name='partner_bank_id']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='amount']" position="attributes">
+                <attribute name='string'>Payment Amount</attribute>
+                <!-- <attribute name='readonly'>True</attribute> -->
+            </xpath>
+            <xpath expr="//field[@name='communication']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='payment_method_line_id']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='payment_amount']" position="before">
+                <field name= 'communication'/>
+            </xpath>
+            <xpath expr="//field[@name='fees']" position="before">
+                <field name= 'amount'/>
+            </xpath>
+            <group name="group2" position="replace">
+                <group name="group2">
+                    <!-- <label for="amount" attrs="{'invisible': ['|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}" string="Currency"/> -->
+                    <!-- <div name="amount_div" class="o_row" attrs="{'invisible': ['|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}"> -->
+                        <!-- <field name="currency_id" required="1" options="{'no_create': True, 'no_open': True}" groups="base.group_multi_currency"/> -->
+                    <!-- </div> -->
+                        <field name="payment_date"/>
+                        <field name="payment_amount" attrs="{'invisible': [('loan_payment_type', 'not in', ['multi_installment', 'installment'])]}" readonly="1"/>
+                        <field name="communication" attrs="{'invisible': ['|', ('can_edit_wizard', '=', False), '&amp;', ('can_group_payments', '=', True), ('group_payment', '=', False)]}"/>
+                </group>
+            </group>
+
+        </field>
+       
+    </record>
+
+    <record id="view_account_payment_register_form" model="ir.actions.act_window">
+        <field name="name">Register Payment</field>
+        <field name="res_model">account.payment.register</field>
+        <!-- <field name="view_type">form</field> -->
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="banas_loan_management.view_account_payment_register_loan_form"/>
+        <field name="target">new</field>
+    </record>
+
+<!--     <record model="ir.ui.view" id="view_account_payment_register_loan_form9">
+        <field name="name">view.account.reg.payment.form.check.pdc2</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="base_accounting_kit.view_account_reg_payment_form_check_pdc"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='effective_date']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='bank_reference']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='cheque_reference']" position="attributes">
+                <attribute name='invisible'>1</attribute>
+            </xpath>
+        </field>
+    </record> -->
+</odoo>

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_loan_statement_document">
+        <t t-call="web.basic_layout">
+            <t t-foreach="loans" t-as="loan">
+                <div class="page">
+                    <div class="header">
+                            <div class="col-10 text-center pt-2" style="border: 2px solid black; text-align: center; padding: 10px; width: 830px;height: 50px;">
+                                <!-- <strong>Loan Statement</strong><br/> -->
+                                 <t t-set="header_text" t-value="loan['company_id'][1]"/>
+                                 <h2><t t-esc="header_text"/></h2>
+                            </div>
+                        </div>
+                    <div class="oe_structure">
+                        <div class="row">
+                            <div class="col-12 text-center pt-2" style="border: 2px solid black; border-top:none">
+                                <strong>Loan Statement</strong><br/>
+                            </div>
+                        </div>
+                        <div class="row pt-2" style="border-right: 2px solid black; border-left: 2px solid black">
+                            <div class="col-3">
+                                <span>Customer</span>
+                            </div>
+                            <div class="col-9">
+                                <span t-esc="loan['partner_id'][1]"/>
+                            </div>
+                        </div>
+                        <div class="row pt-2" style="border-right: 2px solid black; border-left: 2px solid black">
+                            <div class="col-3">
+                                <span>Address</span>
+                            </div>
+                            <div class="col-9">
+                                <span t-esc="loan['address']"/>
+                            </div>
+                        </div>
+                        <div class="row pt-2" style="border-right: 2px solid black; border-left: 2px solid black">
+                            <div class="col-3">
+                                <span>Account Number</span>
+                            </div>
+                            <div class="col-9">
+                                <span t-esc="loan['name']"/>
+                            </div>
+                        </div>
+                        <div class="row pt-2" style="border-right: 2px solid black; border-left: 2px solid black">
+                            <div class="col-3">
+                                <span>Branch</span>
+                            </div>
+                            <div class="col-9">
+                                <!-- <span t-esc="loan['branch_id'][1]"/> -->
+                            </div>
+                        </div>
+                        <div class="row pt-2" style="border-right: 2px solid black; border-left: 2px solid black">
+                            <div class="col-3">
+                                <span>Total Loan Amount</span>
+                            </div>
+                            <div class="col-9">
+                                <span t-esc="loan['loan_amount']"/>
+                            </div>
+                        </div>
+                        <div class="row pt-2" style="border-right: 2px solid black; border-left: 2px solid black">
+                            <div class="col-3">
+                                <span>Total Paid Amount</span>
+                            </div>
+                            <div class="col-9">
+                                <span t-esc="loan['payment_amount']"/>
+                            </div>
+                        </div>
+                        <div class="row pt-2" style="border-right: 2px solid black; border-left: 2px solid black">
+                            <div class="col-3">
+                                <span>Total Interest Paid</span>
+                            </div>
+                            <div class="col-9">
+                                <span t-esc="loan['interests_amount']"/>
+                            </div>
+                        </div>
+                        <div class="row pt-2" style="border-right: 2px solid black; border-left: 2px solid black">
+                            <div class="col-3">
+                                <span>Total Pending Amount</span>
+                            </div>
+                            <div class="col-9">
+                                <span t-esc="loan['pending_payment_amount']"/>
+                            </div>
+                        </div>
+                        <!-- <t t-foreach="lines" t-as="line"> -->
+                            <div class="row pl-2 pr-2" style="border-right: 2px solid black; border-left: 2px solid black">
+                                <table class="table table-bordered mt-4 mb-0" >
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center py-1" style="border: 1px solid black;"><strong>Sr. No</strong></th>
+                                            <th class="text-center py-1" style="border: 1px solid black;"><strong>Date</strong></th>
+                                            <th class="text-center py-1" style="border: 1px solid black;"><strong>INSTL</strong></th>
+                                            <th class="text-center py-1" style="border: 1px solid black;"><strong>Penalty</strong></th>
+                                            <th class="text-center py-1" style="border: 1px solid black;"><strong>Payment Date</strong></th>
+                                            <th class="text-center py-1" style="border: 1px solid black;"><strong>Status</strong></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="lines" t-as="line">
+                                            <tr>
+                                                <td class="text-center py-0" style="border: 1px solid black;">
+                                                    <span t-esc="line['seq_name']"/>
+                                                </td>
+                                                <td class="text-center py-0" style="border: 1px solid black;">
+                                                    <span t-esc="line['date']"/>
+                                                </td>
+                                                <td class="text-center py-0" style="border: 1px solid black;">
+                                                    <span t-esc="line['payment_amount']"/>
+                                                </td>
+                                                <td class="text-center py-0" style="border: 1px solid black;">
+                                                    <span t-esc="line['penalty_charges']"/>
+                                                </td>
+                                                <td class="text-center py-0" style="border: 1px solid black;">
+                                                    <span t-esc="line['date']"/>
+                                                </td>
+                                                <td class="text-center py-0" style="border: 1px solid black;">
+                                                    <span t-esc="line['state']"/>
+                                                </td>
+                                            </tr>      
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p style="page-break-after: always;"/>
+                            <!-- <p t-if="len(lines) != lines[0] and lines[0] != 1" style="page-break-after: always;"/> -->
+                        <!-- </t> -->
+                        
+                    
+                        <div class="row pt-4 pb-2" style="border-right: 2px solid black; border-left: 2px solid black;border-bottom: 2px solid black">
+                            <div class="col-12 text-right">
+                            <br/>
+                            Branch Authorised Signatory
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>      
+        </t>                  
+    </template>
+
+    <record id="action_report_loan_statement" model="ir.actions.report">
+        <field name="name">Loan Report</field>
+        <field name="model">banas.loan</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">banas_loan_management.report_loan_statement_document</field>
+        <field name="report_file">banas_loan_management.report_loan_statement_document</field>
+        <field name="print_report_name">'loan-report'</field>
+        <field name="binding_model_id" ref="model_banas_loan_report_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
+

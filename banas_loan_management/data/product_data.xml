@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="cat_service" model="product.category">
+            <field name="parent_id" ref="product.product_category_all"/>
+            <field name="name">Service</field>
+        </record>
+        <record id="product_gold2" model="product.category">
+            <field name="parent_id" ref="product.product_category_all"/>
+            <field name="name">Golds</field>
+        </record>
+
+        <record id="product_template_loan_processing_fee" model="product.template">
+            <field name="name">Processing Fee</field>
+            <field name="categ_id" ref="cat_service"/>
+            <field name="standard_price">0</field>
+            <field name="list_price">0</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="taxes_id" eval="[(6, 0, [])]"/>
+        </record>
+        <record id="product_template_loan_other_fee" model="product.template">
+            <field name="name">Other Fee</field>
+            <field name="categ_id" ref="cat_service"/>
+            <field name="standard_price">0</field>
+            <field name="list_price">0</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="taxes_id" eval="[(6, 0, [])]"/>
+        </record>
+        <record id="product_template_loan_debit_fee" model="product.template">
+            <field name="name">Debit Note</field>
+            <field name="categ_id" ref="cat_service"/>
+            <field name="standard_price">0</field>
+            <field name="list_price">0</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="taxes_id" eval="[(6, 0, [])]"/>
+        </record>
+
+        <record id="product_template_sale_expense" model="product.template">
+            <field name="name">Sales Person Expense</field>
+            <field name="categ_id" ref="product.cat_expense"/>
+            <field name="standard_price">0</field>
+            <field name="list_price">0</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="taxes_id" eval="[(6, 0, [])]"/>
+        </record>
+
+
+        <record id="product_template_gold_ring" model="product.template">
+            <field name="name">Gold ring</field>
+            <field name="categ_id" ref="product_gold2"/>
+            <field name="standard_price">0</field>
+            <field name="list_price">0</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="taxes_id" eval="[(6, 0, [])]"/>
+        </record>
+        <record id="product_template_gold_chain" model="product.template">
+            <field name="name">Gold Chain</field>
+            <field name="categ_id" ref="product_gold2"/>
+            <field name="standard_price">0</field>
+            <field name="list_price">0</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="taxes_id" eval="[(6, 0, [])]"/>
+        </record>
+        <record id="product_template_gold_bracelate" model="product.template">
+            <field name="name">Gold Bracelate</field>
+            <field name="categ_id" ref="product_gold2"/>
+            <field name="standard_price">0</field>
+            <field name="list_price">0</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="taxes_id" eval="[(6, 0, [])]"/>
+        </record>
+    </data>
+</odoo>

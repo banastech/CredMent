@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="vehicle_loan" model="banas.loan.type">
+            <field name="name">Vehicle</field>
+            <field name="cal_method">fixed-annuity</field>
+            <field name="type">vehicle</field>
+            <field name="journal_other_fee_id" ref="loan_fees_journal"/>
+            <field name="journal_processing_fee_id" ref="loan_processing_fee_journal"/>
+            <field name="penalty_journal_id" ref="loan_penalty_journal"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="fees_ids" eval="[Command.clear()]"/>
+        </record>
+
+      <!--   <record id="vehicle_loan_fees_pro" model="banas.loan.type.fees">
+            <field name="product_id" ref="product_template_loan_processing_fee"/>
+            <field name="account_id" ref="fees_account_account"/>
+            <field name="charges">2</field>
+            <field name="loan_type_id" ref="vehicle_loan"/>
+        </record> -->
+
+        <record id="gold_loan" model="banas.loan.type">
+            <field name="name">Gold</field>
+            <field name="cal_method">advanceinterest</field>
+            <field name="type">gold</field>
+            <field name="journal_other_fee_id" ref="loan_fees_journal"/>
+            <field name="journal_processing_fee_id" ref="loan_processing_fee_journal"/>
+            <field name="penalty_journal_id" ref="loan_penalty_journal"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="fees_ids" eval="[Command.clear()]"/>
+        </record>
+
+   <!--      <record id="gold_loan_fees_pro" model="banas.loan.type.fees">
+            <field name="product_id" ref="product_template_loan_processing_fee"/>
+            <field name="account_id" ref="fees_account_account"/>
+            <field name="charges">2</field>
+            <field name="loan_type_id" ref="gold_loan"/>
+        </record> -->
+
+        <record id="gold_personal" model="banas.loan.type">
+            <field name="name">Personal</field>
+            <field name="cal_method">fixed-annuity</field>
+            <field name="type">personal</field>
+            <field name="journal_other_fee_id" ref="loan_fees_journal"/>
+            <field name="journal_processing_fee_id" ref="loan_processing_fee_journal"/>
+            <field name="penalty_journal_id" ref="loan_penalty_journal"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="fees_ids" eval="[Command.clear()]"/>
+        </record>
+
+      <!--   <record id="gold_personal_fees_pro" model="banas.loan.type.fees">
+            <field name="product_id" ref="product_template_loan_processing_fee"/>
+            <field name="account_id" ref="fees_account_account"/>
+            <field name="charges">2</field>
+            <field name="loan_type_id" ref="gold_personal"/>
+        </record> -->
+    </data>
+</odoo>

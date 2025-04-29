@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_banas_loan_cal_form" model="ir.ui.view">
+        <field name="name">banas.loan.cal.form</field>
+        <field name="model">loan.cal</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group class="o_label_nowrap">
+                        <group>
+                            <field name="loan_amount"/>
+                            <field name="currency_id" groups="base.group_multi_currency" invisible = "1"/>
+                            <field name="rate"/>
+                            <field name="periods"/>
+                            <field name="method_period"/>
+                        </group>
+                        <group>
+                            <field name="rate_type" invisible="1"/>
+                            <field name="loan_type" invisible="1"/>
+                            <field name="rate_period"/>
+                        </group>
+                    </group>
+                    <group class="o_label_nowrap">
+                        <group>
+                            <field name="fixed_amount"/>
+                             <field name="total_interests_amount"/>
+                            <field name="total_payment_amount"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button special="cancel" string="Close" class="oe_highlight"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="banas_loan_cal_action" model="ir.actions.act_window"> 
+        <field name="name">Loan Calculator</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">loan.cal</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="help" type="xml">
+          <p class="o_view_nocontent_smiling_face">
+            Loan Calculator
+          </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_action_loan_cal"
+        name="Calculator"
+        action="banas_loan_cal_action"
+        parent="menu_account_loan_root" sequence="20"/> 
+      
+</odoo>
+   

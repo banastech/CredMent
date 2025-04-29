@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <menuitem
+                id="menu_action__contact"
+                name="Contacts"
+                parent="menu_account_loan_root" sequence="40"/> 
+        <menuitem
+                id="menu_action__contact_customer"
+                name="Customer"
+                action="action_banas_customer"
+                parent="menu_action__contact" sequence="10"/> 
+        <menuitem
+                id="menu_action__contact_vendor"
+                name="Vendors"
+                action="action_partner_vendor_form"
+                parent="menu_action__contact" sequence="20"/> 
+        <menuitem
+                id="menu_action__contact_rto_office"
+                name="RTO Offices"
+                action="action_partner_rto_form"
+                parent="menu_action__contact" sequence="30"/>   
+
+
+
+        <menuitem
+                id="menu_action__reports"
+                name="Reports"
+                parent="menu_account_loan_root" sequence="50"
+                /> 
+        <menuitem
+                id="menu_action__loan_reports"
+                name="Loan Report"
+                action="action_banas_loan_statement_wizard"
+                parent="menu_action__reports" sequence="10"/> 
+
+      
+        <!-- <menuitem
+                id="menu_action__sms"
+                name="SMS"
+                action="sms.sms_sms_action"
+                parent="menu_action__reports" sequence="30"/> -->
+        <!-- <menuitem
+                id="menu_action_branch"
+                name="Branch"
+                action="banas_branch.action_banas_res_branch"
+                parent="menu_action__reports" sequence="40"/>
+ -->
+        
+
+
+
+        <menuitem
+                id="menu_action__configration"
+                name="Configrations"
+                parent="menu_account_loan_root" sequence="60"/>
+
+        <menuitem
+                id="menu_action_setting"
+                name="Settings"
+                action="action_loan_configuration"
+                parent="menu_action__configration" sequence="5"/>
+        <!--  -->
+        <menuitem
+                id="menu_action__master_data"
+                name="Master Data"
+                parent="menu_action__configration" sequence="10"/>
+        <menuitem
+                id="menu_action_vehicle"
+                name="Vehicle"
+                parent="menu_action__master_data" sequence="10"/>
+        <menuitem
+                id="menu_action_vehicle_model"
+                name="Vehicle Model"
+                action="fleet.fleet_vehicle_model_action"
+                parent="menu_action_vehicle" sequence="10"/>
+        <menuitem
+                id="menu_action_types_vehicle_model_make"
+                name="Model make of Vehicle"
+                action="fleet.fleet_vehicle_model_brand_action"
+                parent="menu_action_vehicle" sequence="20"/>
+
+        <menuitem
+                id="menu_action_types"
+                name="Types"
+                action="action_banas_loan_type"
+                parent="menu_action__master_data" sequence="20"/>
+        <menuitem
+                id="menu_action__doc_type"
+                name="Document Types"
+                action="action_banas_loan_doc_type"
+                parent="menu_action__master_data" sequence="30"/>
+
+        <menuitem
+                id="menu_action__ownership"
+                name="Ownership"
+                action="action_banas_loan_vehicle_ownership"
+                parent="menu_action__master_data" sequence="40"/>
+        <menuitem
+                id="menu_action__relationship"
+                name="Relationship"
+                action="action_banas_res_relationship"
+                parent="menu_action__master_data" sequence="50"/>
+     <!--  -->
+
+</odoo>
+
+

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_credit_report">
+        <t t-call="web.basic_layout">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="CreditProfileHeader" t-value="credit_data['CreditProfileHeader']"/>
+
+                <t t-set="Current_Application" t-value="credit_data['Current_Application']"/>
+                <t t-set="score" t-value="credit_data['score']"/>
+                <t t-set="Current_Applicant_Address_Details" t-value="credit_data['Current_Applicant_Address_Details']"/>
+                <t t-set="Credit_Account" t-value="credit_data['Credit_Account']"/>
+                <t t-set="Total_Outstanding_Balance" t-value="credit_data['Total_Outstanding_Balance']"/>
+                <t t-set="TotalCAPS_Summary" t-value="credit_data['TotalCAPS_Summary']"/>
+                <t t-set="NonCreditCAPS_Summary" t-value="credit_data['NonCreditCAPS_Summary']"/>
+                <t t-set="CAIS_Account_DETAILS" t-value="credit_data['CAIS_Account_DETAILS']"/>
+                <div class="page">
+                    <div class="row" style="background: #d9dadb">
+                        <div class="col-6 py-4 px-1">
+                            <img src="/banas_loan_management/static/img/experian_logo.png" alt="Logo" width="250"/>
+                        </div>
+                        <div class="col-6 p-2" style="text-align:right;">
+                            <p><b>Experian Credit Report</b></p>
+                            <p>Report Date: <span t-esc="CreditProfileHeader['ReportDate']"/></p>
+                            <p>Report Time: <span t-esc="CreditProfileHeader['ReportTime']"/></p>
+                            <p>Report Number: <span t-esc="CreditProfileHeader['ReportNumber']"/></p>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Current Application Information</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6 py-4 px-1">
+                                        <p>Name: <span t-esc="Current_Application['First_Name']"/> <span t-esc="Current_Application['Middle_Name1']"/> <span t-esc="Current_Application['Last_Name']"/></p>
+
+                                        <p>Mobile Phone: <span t-esc="Current_Application['MobilePhoneNumber']"/></p>
+
+                                        <p>PAN: <span t-esc="Current_Application['IncomeTaxPan']"/></p>
+                                    </div>
+                                    <div class="col-5 py-4 px-1">
+                                    <p>Date of Birth: <span t-esc="Current_Application['Date_Of_Birth_Applicant']"/></p>
+
+                                    <p>Email: <span t-esc="Current_Application['EMailId']"/></p>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Experian Credit Score</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6 py-4 px-1">
+                                        <p>Score: <span t-esc="score[0]['FCIREXScore']"/></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Applicant Address Details</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6 py-4 px-1">
+                                        <p>FlatNo/PlotNo/HouseNo: <span t-esc="Current_Applicant_Address_Details[0]['FlatNoPlotNoHouseNo']"/></p>
+                                        <p>Building Number Society Name: <span t-esc="Current_Applicant_Address_Details[0]['BldgNoSocietyName']"/></p>
+                                        <p>Road Number Name Area Locality: <span t-esc="Current_Applicant_Address_Details[0]['RoadNoNameAreaLocality']"/></p>
+                                        <p>City: <span t-esc="Current_Applicant_Address_Details[0]['City']"/></p>
+                                    </div>
+                                    <div class="col-5 py-4 px-1">
+                                        <p>Landmark: <span t-esc="Current_Applicant_Address_Details[0]['Landmark']"/></p>
+
+                                        <p>State: <span t-esc="Current_Applicant_Address_Details[0]['State']"/></p>
+                                        <p>Pincode: <span t-esc="Current_Applicant_Address_Details[0]['PINCode']"/></p>
+                                        <p>Country code: <span t-esc="Current_Applicant_Address_Details[0]['Country_Code']"/></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="page-break-before: always;"></div>
+                    <div class="">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Report Summary</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6 py-4 px-1">
+                                        <p>Credit Account Summary:</p>
+                                        <p>Total Number of Accounts: <span t-esc="Credit_Account['CreditAccountTotal']"/></p>
+                                        <p>Active Accounts: <span t-esc="Credit_Account['CreditAccountActive']"/></p>
+                                        <p>Closed Accounts: <span t-esc="Credit_Account['CreditAccountClosed']"/></p>
+                                        <p>SF/WD/WO/SET/RES: <span t-esc="Credit_Account['CADSuitFiledCurrentBalance']"/></p>
+                                        <br/>
+                                        <p>Credit Enquiry Summary:</p>
+                                        <p>Last 7 days credit enquiries: <span t-esc="TotalCAPS_Summary['TotalCAPSLast7Days']"/></p>
+                                        <p>Last 30 days credit enquiries: <span t-esc="TotalCAPS_Summary['TotalCAPSLast30Days']"/></p>
+                                        <p>Last 90 days credit enquiries: <span t-esc="TotalCAPS_Summary['TotalCAPSLast90Days']"/></p>
+                                        <p>Last 180 days credit enquiries: <span t-esc="TotalCAPS_Summary['TotalCAPSLast180Days']"/></p>
+                                    </div>
+                                    <div class="col-5 py-4 px-1">
+                                        <p>Current Balance Amount Summary:</p>
+                                        <p>Total Current Bal. amt: <span t-esc="Total_Outstanding_Balance['Outstanding_Balance_All']"/></p>
+                                        <p>Secured Accounts amt: <span t-esc="Total_Outstanding_Balance['Outstanding_Balance_Secured']"/></p>
+                                        <p>Unsecured Accounts amt: <span t-esc="Total_Outstanding_Balance['Outstanding_Balance_UnSecured']"/></p>
+                                        <br/><br/>
+                                        <p>Non Credit Enquiry Summary:</p>
+                                        <p>Enquiries in Last 7 days: <span t-esc="NonCreditCAPS_Summary['NonCreditCAPSLast7Days']"/></p>
+                                        <p>Enquiries in Last 30 days: <span t-esc="NonCreditCAPS_Summary['NonCreditCAPSLast30Days']"/></p>
+                                        <p>Enquiries in Last 90 days: <span t-esc="NonCreditCAPS_Summary['NonCreditCAPSLast90Days']"/></p>
+                                        <p>Enquiries in Last 180 days: <span t-esc="NonCreditCAPS_Summary['NonCreditCAPSLast180Days']"/></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Credit Account Information</strong>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Sr. No</th>
+                                            <th>Account Type</th>
+                                            <th>Account Number</th>
+                                            <th>Account Status</th>
+                                            <th>Date Opened</th>
+                                            <th>Currency Code</th>
+                                            <th>Current Balance Amount</th>
+                                            <th>Overdue</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="count" t-value="0"/>
+                                        <t t-foreach="credit_data['CAIS_Account_DETAILS']" t-as="account">
+                                            <t t-set="count" t-value="count + 1"/>
+                                            <tr>
+                                                <td><span t-esc="'Acc%s' % count"/></td>
+                                                <td><span t-esc="account['Account_Type']"/></td>
+                                                <td><span t-esc="account['Account_Number']"/></td>
+                                                <td><span t-esc="account['Account_Status']"/></td>
+                                                <td><span t-esc="account['Open_Date']"/></td>
+                                                <td><span t-esc="account['CurrencyCode']"/></td>
+                                                <td><span t-esc="account['Current_Balance']"/></td>
+                                                <td><span t-esc="account['Amount_Past_Due']"/></td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="page-break-before: always; margin-top: -111px;"></div>
+                    <div class="">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>Credit Account Information Details</strong>
+                            </div>
+                            <div class="card-body">
+                                <p>This section has information based on the details provided to Experian by all our member banks, credit/financial institutions, and other credit grantors with whom you have a credit/loan account.</p>
+                                <t t-set="count" t-value="0"/>
+                                <t t-foreach="credit_data['CAIS_Account_DETAILS']" t-as="account_details">
+                                    <t t-set="count" t-value="count + 1"/>
+                                    <!-- <t t-if="count > 1">
+                                        <div style="page-break-before: always"></div>
+                                    </t> -->
+                                    <!-- <div style="page-break-after:"></div> -->
+                                    <div class="border p-3 mb-3" >
+                                        <div class="card-header" style="page-break-inside: avoid;">
+                                        <h5><strong>Account <t t-esc="count"/></strong></h5>
+                                    </div>
+                                    <!-- <br/> -->
+                                        <!-- <div class="row"> -->
+                            <!-- <div class="col-6 py-4 px-1"> -->
+                            <t t-foreach="account_details['CAIS_Holder_Details']" t-as="holder">
+                                
+                                    <p><strong><span t-esc="holder['Surname_Non_Normalized']"/> <span t-esc="holder['First_Name_Non_Normalized']"/> <span t-esc="holder['Middle_Name_1_Non_Normalized']"/></strong></p></t>
+                                    <t t-foreach="account_details['CAIS_Holder_Address_Details']" t-as="address">
+                                    <p><strong>Address: </strong><span t-esc="address['First_Line_Of_Address_non_normalized']"/> <span t-esc="address['Second_Line_Of_Address_non_normalized']"/> <span t-esc="address['Third_Line_Of_Address_non_normalized']"/> <span t-esc="address['City_non_normalized']"/> <span t-esc="address['Fifth_Line_Of_Address_non_normalized']"/> <span t-esc="address['State_non_normalized']"/> <span t-esc="address['CountryCode_non_normalized']"/> <span t-esc="address['ZIP_Postal_Code_non_normalized']"/></p>
+                                <!-- </t> -->
+                            </t>
+                            <!-- <br/> -->
+                            <!-- </div> -->
+                            <div class="row">
+                                <!-- Partition 1: Account Terms -->
+                                <div class="col-5 py-4 px-1">
+                                    <p><strong style="line-height: 2.8;">Account Terms</strong></p>
+                                    <p><strong>Account Number:</strong> <span t-esc="account_details['Account_Number']"/></p>
+                                    <p><strong>Date Opened:</strong> <span t-esc="account_details['Open_Date']"/></p>
+                                    <p><strong>Date Closed:</strong> <span t-esc="account_details['Date_Closed']"/></p>
+                                    <p><strong>Rate of Interest:</strong> <span t-esc="account_details['Rate_of_Interest']"/></p>
+                                    <p><strong>Value of Collateral:</strong> <span t-esc="account_details['Value_of_Collateral']"/></p>
+                                    <p><strong>Type of Collateral:</strong> <span t-esc="account_details['Type_of_Collateral']"/></p>
+                                </div>
+
+                                <!-- Partition 2: Account Description -->
+                                <div class="col-4 py-4 px-1">
+                                    <p><strong style="line-height: 2.8;">Account Description</strong></p>
+                                    <p><strong>Date Reported:</strong> <span t-esc="account_details['Date_Reported']"/></p>
+                                    <p><strong>Account Status:</strong> <span t-esc="account_details['Account_Status']"/></p>
+                                    <p><strong>Current Balance:</strong> <span t-esc="account_details['Current_Balance']"/></p>
+                                    <p><strong>Amount Overdue:</strong> <span t-esc="account_details['Amount_Past_Due']"/></p>
+                                    <p><strong>Last Payment Date:</strong> <span t-esc="account_details['Date_of_Last_Payment']"/></p>
+                                    <p><strong>SuitField Willful Default:</strong> <span t-esc="account_details['SuitFiled_WillfulDefault']"/></p>
+                                </div>
+
+                                <!-- Partition 3: Account Details -->
+                                <div class="col-3 py-4 px-1">
+                                    <p><strong style="line-height: 2.8;">Account Details</strong></p>
+                                    <p><strong>Credit Limit Amt:</strong> <span t-esc="account_details['Credit_Limit_Amount']"/></p>
+                                    <p><strong>Repayment Tenure:</strong> <span t-esc="account_details['Repayment_Tenure']"/> months</p>
+                                    <p><strong>Total Write-off Amt:</strong> <span t-esc="account_details['Written_Off_Amt_Total']"/></p>
+                                    <p><strong>Principal Write-off:</strong> <span t-esc="account_details['Written_Off_Amt_Principal']"/></p>
+                                    <p><strong>Settlement Amt:</strong> <span t-esc="account_details['Settlement_Amount']"/></p>
+                                </div>
+                            </div>
+                        <!-- </div> -->
+                                    </div>
+                                    <div class="border p-3 mb-3">
+                                        <div class="card-header">
+                                            <strong>Consumer Personal details on the Credit Account <t t-esc="count"/></strong>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-6 py-4 px-1" style="margin-bottom: -15px;">
+                                                    <t t-foreach="account_details.get('CAIS_Holder_Details', [])" t-as="holder">
+                                                        <div class="mb-2">
+                                                            <p><strong>Date of Birth:</strong> <span t-esc="holder['Date_of_birth']"/></p>
+                                                            <p><strong>Gender:</strong> <span t-esc="holder['Gender_Code']"/></p>
+                                                            <t t-set="email_pan" t-value="account_details.get('CAIS_Holder_ID_Details', [{}])[0]"/>
+                                                            <p><strong>Email Address:</strong> <span t-esc="email_pan.get('EMailId', '')"/></p>
+                                                            <p><strong>PAN:</strong> <span t-esc="email_pan.get('Income_TAX_PAN', '')"/></p>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                                <div class="col-6 py-4 px-1" style="margin-bottom: -15px;">
+                                                    <!-- Header Row -->
+                                                    <div class="d-flex font-weight-bold mb-2">
+                                                        <div class="w-25"><strong>Phone Type:</strong></div>
+                                                        <div class="w-50"><strong>Phone Number:</strong></div>
+                                                        <div class="w-25"><strong>Extention:</strong></div>
+                                                    </div>
+                                                    
+                                                    <!-- Data Rows -->
+                                                    <t t-foreach="account_details.get('CAIS_Holder_Phone_Details', [])" t-as="phone">
+                                                        <div class="d-flex mb-1">
+                                                            <div class="w-25" t-esc="phone['Telephone_Type']"/>
+                                                            <div class="w-50" t-esc="phone['Telephone_Number'] or phone['Mobile_Telephone_Number'] or ''"/>
+                                                            <div class="w-25" t-esc="phone['Telephone_Extension'] or ''"/>
+                                                        </div>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_report_credit_report"
+        model="res.partner"
+        string="Credit Report2"
+        report_type="qweb-pdf"
+        name="banas_loan_management.report_credit_report"
+        file="banas_loan_management.report_credit_report"
+        menu="True"
+    />
+
+    <report
+        id="action_report_lead_credit_report"
+        model="crm.lead"
+        string="Credit Report"
+        report_type="qweb-pdf"
+        name="banas_loan_management.report_credit_report"
+        file="banas_loan_management.report_credit_report"
+        menu="True"
+    />
+</odoo>
+

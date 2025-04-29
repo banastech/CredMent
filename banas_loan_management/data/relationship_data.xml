@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="relationship_1" model="res.relationship">
+            <field name="name">Daughter</field>
+        </record>
+        <record id="relationship_2" model="res.relationship">
+            <field name="name">Wife</field>
+        </record>
+        <record id="relationship_3" model="res.relationship">
+            <field name="name">Sister-in-Law</field>
+        </record>
+        <record id="relationship_4" model="res.relationship">
+            <field name="name">Other</field>
+        </record>
+        <record id="relationship_5" model="res.relationship">
+            <field name="name">Husband</field>
+        </record>
+        <record id="relationship_6" model="res.relationship">
+            <field name="name">Daughter-in-Law</field>
+        </record>
+        <record id="relationship_7" model="res.relationship">
+            <field name="name">Brother</field>
+        </record>
+        <record id="relationship_8" model="res.relationship">
+            <field name="name">Son</field>
+        </record>
+        <record id="relationship_9" model="res.relationship">
+            <field name="name">Parents</field>
+        </record>
+        <record id="relationship_10" model="res.relationship">
+            <field name="name">Mother</field>
+        </record>
+        <record id="relationship_1`" model="res.relationship">
+            <field name="name">Father</field>
+        </record>
+        <record id="relationship_11" model="res.relationship">
+            <field name="name">Brother-in-Law</field>
+        </record>
+        <record id="relationship_12" model="res.relationship">
+            <field name="name">Son-in-Law</field>
+        </record>
+        <record id="relationship_13" model="res.relationship">
+            <field name="name">Sister</field>
+        </record>
+        <record id="relationship_14" model="res.relationship">
+            <field name="name">Mother-in-Law</field>
+        </record>
+        <record id="relationship_15" model="res.relationship">
+            <field name="name">Father-in-Law</field>
+        </record>
+    </data>
+</odoo>

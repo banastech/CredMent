@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<odoo>
+   <!--  <record id="loan_sms_action" model="ir.ui.view">
+        <field name="name">SMS</field>
+        <field name="model">sms.sms</field>
+        <field name="inherit_id" ref="sms.sms_tsms_view_form"/>
+        <field name="arch" type="xml">
+        	
+         
+        </field>
+    </record> -->
+
+		
+
+    <record id="sms.sms_tsms_view_form" model="ir.ui.view">
+        <field name="name">sms.sms.view.form</field>
+        <field name="model">sms.sms</field>
+        <field name="arch" type="xml">
+            <form string="SMS">
+                <header>
+                    <button name="send" string="Send Now" type="object" states='outgoing' class="oe_highlight" />
+                    <button name="action_set_outgoing" string="Retry" type="object" states='error,canceled'/>
+                    <button name="action_set_canceled" string="Cancel" type="object" states='error,outgoing'/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="mail_message_id" readonly="1" attrs="{'invisible': [('mail_message_id', '=', False)]}"/>
+                            <field name="number" required="1"/>
+                            <field name="failure_type" readonly="1" />
+                            <field name="partner_id" string="Contact" invisible="1"/>
+                        </group>
+                        
+                    </group>
+                    <group>
+                        <field name="body" widget="sms_widget" string="SMS" required="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+</odoo>
