@@ -2,26 +2,26 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     "name": "Banas-Account Loan management",
-    "version": "11.0.1.2.0",
+    "version": "17.0.1.2.0",
     "icon":"/static/description/odoo_icon.png",
     "author": "BanasTech",
     "website": "http://banastech.com",
-    "license": "",
     "category": "Accounting",
     "sequence": -100,
     "depends": [
         "l10n_in",
+        "fleet",
         "account",
         "product",
         "base",
-        "fleet",
+        "account_payment",
         # "crm_sms",
         # "sms",
         # "banas_branch",
         # "banas_approval_engine",
-        "account_payment",
         # 'base_accounting_kit',
         # 'banas_sms_gateway',
+
     ],
 
     "data": [
@@ -32,7 +32,7 @@
         'data/ir_sequence_data.xml',
         'data/relationship_data.xml',
         'data/vehicle_brand_data.xml',
-        'data/relationship_data.xml',
+        # 'data/relationship_data.xml',
         'data/product_data.xml',
         'data/company_data.xml',
         'data/loan_type_data.xml',

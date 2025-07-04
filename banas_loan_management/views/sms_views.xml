@@ -26,7 +26,7 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="mail_message_id" readonly="1" attrs="{'invisible': [('mail_message_id', '=', False)]}"/>
+                            <field name="mail_message_id" readonly="1" invisible="[mail_message_id == False"/>
                             <field name="number" required="1"/>
                             <field name="failure_type" readonly="1" />
                             <field name="partner_id" string="Contact" invisible="1"/>

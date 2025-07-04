@@ -43,7 +43,7 @@ class AccountLoanLine(models.Model):
     )
     long_term_loan_account_id = fields.Many2one(
         'account.account',
-        readony=True,
+        readonly=True,
         related='loan_id.long_term_loan_account_id',
     )
     currency_id = fields.Many2one(

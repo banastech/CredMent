@@ -25,12 +25,12 @@
                     <field name="currency_id" invisible="1"/>
                     <field name="state"/>
                     <field name="has_payments" invisible="1"/>
-                    <button name="view_account_values" string="Entires"
-                        type="object" icon="fa-book"
-                        attrs="{'invisible': [('state', '!=', 'done')]}"/>
-                        <button name="view_process_values" string="Payment"
-                            type="object" icon=""
-                            attrs="{'invisible': ['|',('state', '=', 'done'),('state', '=', 'cancelled')]}"/>
+                        <button name="view_account_values" string="Entires"
+                            type="object" icon="fa-book"
+                            invisible="state != 'done'"/>
+                            <button name="view_process_values" string="Payment"
+                                type="object" icon=""
+                                invisible="state == 'done' or state == 'cancelled'"/>
                         </tree>
                     </field>
                 </record>
@@ -40,8 +40,8 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button name="view_account_values" string="Entries" type="object" icon="fa-book" attrs="{'invisible': [('state', '!=', 'done')]}" groups="banas_loan_management.group_banas_loan_officer,banas_loan_management.group_banas_loan_manager"/>
-                        <button name="view_process_values" string="Payment" type="object" icon="" attrs="{'invisible': ['|', ('loan_state', '!=', 'posted'), ('state', '=', 'done'),]}" groups="banas_loan_management.group_banas_loan_officer,banas_loan_management.group_banas_loan_manager"/>
+                        <button name="view_account_values" string="Entries" type="object" icon="fa-book" invisible="state != 'done'" groups="banas_loan_management.group_banas_loan_officer,banas_loan_management.group_banas_loan_manager"/>
+                        <button name="view_process_values" string="Payment" type="object" icon="" invisible="loan_state != 'posted' or state == 'done'" groups="banas_loan_management.group_banas_loan_officer,banas_loan_management.group_banas_loan_manager"/>
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>

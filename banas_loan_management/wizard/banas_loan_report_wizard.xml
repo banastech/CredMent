@@ -12,11 +12,11 @@
                 <group>
                     <group>
                         <field name="type" invisible="1"/>
-                        <field name="statement_type" attrs="{'invisible': [('type', '!=', 'statement')], 'required': [('type', '=', 'statement')]}"/>
-                        <field name="date_start" attrs="{'required': [('statement_type', '=', 'date')], 'invisible': [('statement_type', '!=', 'date')]}"/>
-                        <field name="date_end" attrs="{'required': [('statement_type', '=', 'date')], 'invisible': [('statement_type', '!=', 'date')]}"/>
-                        <field name="installment_from" attrs="{'required': [('statement_type', '=', 'installment')], 'invisible': [('statement_type', '!=', 'installment')]}"/>
-                        <field name="installment_to" attrs="{'required': [('statement_type', '=', 'installment')], 'invisible': [('statement_type', '!=', 'installment')]}"/>
+                        <field name="statement_type" invisible="type != 'statement'" required="type == 'statement'"/>
+                        <field name="date_start" required="statement_type == 'date'" invisible="statement_type != 'date'" />
+                        <field name="date_end" required="statement_type == 'date'" invisible="statement_type != 'date'"/>
+                        <field name="installment_from" required="statement_type == 'installment'" invisible="statement_type != 'installment'"/>
+                        <field name="installment_to" required="statement_type == 'installment'" invisible="statement_type != 'installment'"/>
                     </group>
                     <group>
                     </group>

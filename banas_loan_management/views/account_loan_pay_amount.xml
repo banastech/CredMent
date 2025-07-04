@@ -12,15 +12,15 @@
                         <field name="payment_journal_id" widget="selection"/>
                         <field name="date"/>
                         <field name="cancel_loan"/>
-                        <field name="amount" attrs="{'invisible': [('cancel_loan', '=', True)]}"/>
+                        <field name="amount" invisible="cancel_loan == True"/>
                         <field name="fees"/>
                         <field name="interests_amount"/>
                         <field name="debit_note_remain_amount"/>
-                        <field name="debit_note_amount" attrs="{'invisible': [('debit_note_remain_amount', '=', 0.00)], 'required': [('debit_note_remain_amount', '!=', 0.00)]}"/>
-                        <field name="debit_note_interest_amount" attrs="{'invisible': [('debit_note_remain_amount', '=', 0.00)], 'required': [('debit_note_remain_amount', '!=', 0.00)]}"/>
+                        <field name="debit_note_amount" invisible="debit_note_remain_amount == 0.00" required="debit_note_remain_amount != 0.00"/>
+                        <field name="debit_note_interest_amount" invisible="debit_note_remain_amount == 0.00" required="debit_note_remain_amount != 0.00"/>
                         <field name="amount_total_debit"/>
                         <field name="amount_total"/>
-                        <field name="amount_total_cancel" attrs="{'invisible': [('cancel_loan', '!=', True)]}"/>
+                        <field name="amount_total_cancel" invisible="cancel_loan != True"/>
                         <field name="currency_id"/>
                     </group>
                 </group>

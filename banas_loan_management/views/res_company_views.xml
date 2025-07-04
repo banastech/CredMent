@@ -29,6 +29,9 @@
         <!-- <field name="groups_id" eval="[(6, 0, [ref('base.group_erp_manager')])]"/> -->
         <field name="inherit_id" ref="base.view_company_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//page[@name='branches']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
             <field name="currency_id" position="attributes">
                 <attribute name="groups">base.group_erp_manager</attribute>
             </field>
@@ -48,7 +51,7 @@
                     <group class="o_label_nowrap" name="first">
                         <group>
                             <field name="advance_payment_method"/>
-                            <field name="day_interest_rate" attrs="{'invisible': [('advance_payment_method', '!=', 'partial')], 'required': [('advance_payment_method', '=', 'partial')]}"/>
+                            <field name="day_interest_rate" invisible="advance_payment_method != 'partial'" required="advance_payment_method == 'partial'"/>
                         </group>
                         <group>
                             <field name="adv_pay_interest"/>

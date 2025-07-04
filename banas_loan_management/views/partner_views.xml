@@ -13,8 +13,8 @@
                 <!-- <button class="oe_stat_button" type="object" name="action_loan_count" icon="fa-solid fa-ranking-star">
                     <field string="Credit Score" name="credit_score" widget="statinfo" modifiers="{&quot;readonly&quot;: true}"/>
                 </button> -->
-                <button class="oe_stat_button" type="object" name="archive_me" icon="fa-archive" attrs="{'invisible':[('active','=',False)]}" style="color:green;">Archive</button>
-                <button class="oe_stat_button" type="object" name="archive_me" icon="fa-archive" attrs="{'invisible':[('active','=',True)]}" style="color:red;">Unarchive</button>
+                <button class="oe_stat_button" type="object" name="archive_me" icon="fa-archive" invisible="active == False" style="color:green;">Archive</button>
+                <button class="oe_stat_button" type="object" name="archive_me" icon="fa-archive" invisible="active == True" style="color:red;">Unarchive</button>
             </xpath>
             <xpath expr="//sheet" position="before">
                 <header>
@@ -47,17 +47,17 @@
                 <attribute name="placeholder">e.g. https://www.banastech.com</attribute>
             </xpath>
             <xpath expr="//field[@name='title']" position='after'>
-                <field name="gender" attrs="{'invisible': [('company_type', '!=', 'person')]}"/>
-                <field name = "marital_status" attrs="{'invisible': [('company_type', '!=', 'person')]}"/>
+                <field name="gender" invisible="company_type != 'person'"/>
+                <field name = "marital_status" invisible="company_type != 'person'"/>
             </xpath>
-            <xpath  expr="//div[@class='o_address_format']" position="after">
+            <xpath  expr="//div[hasclass('o_address_format')]" position="after">
                 <field name="partner_type" groups="base.group_no_one"  />
                 <field name="type" groups="base.group_no_one" invisible="1" />
-                <field name="pan_number" attrs="{'invisible': [('company_type', '!=', 'person')]}" placeholder="ABCTY1234D"/>
+                <field name="pan_number" invisible="company_type != 'person'" placeholder="ABCTY1234D"/>
                 <field name="date_of_birth" 
-                        attrs="{'invisible': [('company_type', '!=', 'person')]}" />
+                        invisible="company_type != 'person'" />
                 <!-- <field name="branch_ids" widget="many2many_tags" options="{'no_create': 1, 'no_edit': 1, 'no_open': 1}"/> -->
-                <field name="date_of_registration" string="Registration Date" attrs="{'invisible': [('company_type', '=', 'person')]}"/>
+                <field name="date_of_registration" string="Registration Date" invisible="company_type == 'person'"/>
                 <field name="cibil_score" string="Cibil Score"/>
             </xpath>
 
@@ -149,7 +149,7 @@
                                         <field name="date_of_birth"/>
                                         <field name="gender"/>
                                         <field name="marital_status"/>
-                                        <field name="relationship_id" attrs="{'required': [('individual_type', '=', 'family')], 'invisible': [('individual_type', '!=', 'family')]}"/>
+                                        <field name="relationship_id" required="individual_type == 'family'" invisible="individual_type != 'family'"/>
                                         <field name="email"/>
                                         <field name="phone" widget="phone"/>
                                         <field name="mobile" widget="phone"/>

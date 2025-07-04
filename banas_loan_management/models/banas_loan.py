@@ -93,7 +93,7 @@ class AccountLoan(models.Model):
         required = True,
         readonly = True,
         help='Company or individual that lends the money at an interest rate.',
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         
     )
     company_id = fields.Many2one('res.company',
@@ -101,7 +101,7 @@ class AccountLoan(models.Model):
             required = True,
             readonly = True,
             default=_default_company,
-            states={'draft': [('readonly', False)]},
+            # states={'draft': [('readonly', False)]},
     )
 
     line_ids = fields.One2many(
@@ -170,7 +170,7 @@ class AccountLoan(models.Model):
         ],
         required=True,
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         help='Method of computation of the period annuity',
         store=True,
         default='fixed-annuity',
@@ -201,7 +201,7 @@ class AccountLoan(models.Model):
         default=0.,
         required=True,
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         help='Residual amount of the lease that must be payed on the end in '
              'order to acquire the asset',
     )
@@ -211,7 +211,7 @@ class AccountLoan(models.Model):
              ', if it is unchecked, the annuity will be recalculated on each '
              'period.',
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
     )
     payment_on_first_period = fields.Boolean(
         string = "Payment On First Period",
@@ -230,7 +230,7 @@ class AccountLoan(models.Model):
         string="Journal",
         required=True,
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         default=lambda self: self.env.company.journal_loan_id.id
     )
     short_term_loan_account_id = fields.Many2one('account.account',
@@ -247,7 +247,7 @@ class AccountLoan(models.Model):
         help='Account that will contain the pending amount on Long term',
         domain="[('company_id', '=', company_id)]",
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
     )
     interest_expenses_account_id = fields.Many2one('account.account',
         string = "Interests account",
@@ -259,13 +259,13 @@ class AccountLoan(models.Model):
     is_leasing = fields.Boolean(
         default=False,
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
     )
     leased_asset_account_id = fields.Many2one(
         'account.account',
         domain="[('company_id', '=', company_id)]",
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
     )
     product_id = fields.Many2one(
         'product.product',
@@ -333,14 +333,14 @@ class AccountLoan(models.Model):
         required=True,
         default=fields.Date.context_today,
         readonly=True,
-        states={'draft': [('readonly', False)]}
+        # states={'draft': [('readonly', False)]}
     )
     start_date = fields.Date(
         string="Loan Date",
         required=True,
         default=fields.Date.context_today,
         readonly=True,
-        states={'draft': [('readonly', False)]}
+        # states={'draft': [('readonly', False)]}
     )
     document_ids = fields.One2many('banas.loan.document', 'loan_id', 'Documents')
     gold_document_ids = fields.One2many('banas.loan.document', 'gold_loan_id', 'Jewellery Photograph')
@@ -350,13 +350,13 @@ class AccountLoan(models.Model):
         'res.partner',
         string='Contact',
         readonly=True,
-        states={'draft': [('readonly', False)]}
+        # states={'draft': [('readonly', False)]}
     )
     payment_partner_id = fields.Many2one(
         'res.partner',
         string='Third party to pay',
         readonly=True,
-        states={'draft': [('readonly', False)]}
+        # states={'draft': [('readonly', False)]}
     )
     repayment_type = fields.Selection([
        ('cash', 'By Cash'),
@@ -366,7 +366,7 @@ class AccountLoan(models.Model):
         string='Loan Period',
         required=False,
         readonly=True,
-        states={'draft': [('readonly', False)]}
+        # states={'draft': [('readonly', False)]}
     )
     type_id = fields.Many2one(
         'banas.loan.type',
@@ -374,14 +374,14 @@ class AccountLoan(models.Model):
         required=True,
         # readonly=True,
         domain="[('company_id', '=', company_id)]",
-        states={'draft': [('readonly', False)]}
+        # states={'draft': [('readonly', False)]}
     )
     type = fields.Selection(related='type_id.type')
     application_number = fields.Char('Application Number', readonly=True)
     applied_amount = fields.Float('Applied Amount',
         required=True,
         readonly=True,
-        states={'draft': [('readonly', False)]}
+        # states={'draft': [('readonly', False)]}
     )
     fee_deduct_from_payment = fields.Boolean("Deduct From Payment", default=True)
     process_fee = fields.Float('Processing Fee', readonly=True,compute='compute_other_fees')
@@ -394,13 +394,13 @@ class AccountLoan(models.Model):
         required=True,
         readonly=True,
         default=lambda self: self.env.company.journal_debit_id.id,
-        states={'draft': [('readonly', False)]}
+        # states={'draft': [('readonly', False)]}
     )
     penalty_journal_id = fields.Many2one(
         'account.journal',
         required=True,
         readonly=True,
-        states={'draft': [('readonly', False)]}
+        # states={'draft': [('readonly', False)]}
     )
    
     sales_expense_journal_id = fields.Many2one('account.journal', string="Sale Person Expense Journal", default=lambda self: self.env.company.sales_expense_journal_id.id)
@@ -458,7 +458,7 @@ class AccountLoan(models.Model):
         help='Account where the Penalty will be assigned to',
         required=True,
         readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         default=lambda self: self.env.company.penalty_account_id.id,
     )
 
@@ -467,7 +467,7 @@ class AccountLoan(models.Model):
         string="Other Fees Journal",
         required=True,
         # readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         default=lambda self: self.env.company.journal_other_fee_id.id
     )
     journal_processing_fee_id = fields.Many2one(
@@ -475,7 +475,7 @@ class AccountLoan(models.Model):
         string="Processing Fees Journal",
         required=True,
         # readonly=True,
-        states={'draft': [('readonly', False)]},
+        # states={'draft': [('readonly', False)]},
         default=lambda self: self.env.company.journal_processing_fee_id.id
     )
     debit_note_ids = fields.One2many('account.move', 'debit_loan_id', string="Debit Notes" ,domain=[('move_type', '=', 'out_invoice')])
@@ -507,13 +507,13 @@ class AccountLoan(models.Model):
     #     states={'draft': [('readonly', False)]},
     # )
 
-    fund_type = fields.Selection([('company', 'Business'), ('individual', 'Individual')], string="Fund Type", required=1, default='individual')
+    fund_type = fields.Selection([('company', 'Business'), ('individual', 'Individual')], string="Fund Type", required=True, default='individual')
     gold_ids = fields.One2many(
         "banas.gold.line",
         'loan_id',
         string="Gold Details",
         readonly=True,
-        states={'draft': [('readonly', False)]}
+        # states={'draft': [('readonly', False)]}
     )
     date_maturity = fields.Date(compute='get_maturity_date', string="Maturity Date", store=True)
     asset_valuation = fields.Monetary(string="Assets Valuation")
@@ -551,7 +551,7 @@ class AccountLoan(models.Model):
         required=True,
         default=fields.Date.context_today,
         readonly=True,
-        states={'draft': [('readonly', False)]}
+        # states={'draft': [('readonly', False)]}
     )
 
     # total_delay_interest = fields.Monetary(

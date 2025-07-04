@@ -18,6 +18,71 @@ from datetime import datetime
 #         ]
 #         return res
 
+from odoo import models, fields, _
+
+
+class AccountChartTemplate(models.AbstractModel):
+    _inherit = 'account.chart.template'
+
+    property_account_debit_note_id = fields.Many2one('account.account.template', string='Debit Note Account')
+    property_account_processing_fees_id = fields.Many2one('account.account.template', string='Processing Fees Account')
+    property_account_other_fees_id = fields.Many2one('account.account.template', string='Other Fees Account')
+    property_account_penalty_fee_id = fields.Many2one('account.account.template', string='Penalty Fee Account')
+
+    def _get_journal_templates(self):
+        self.ensure_one()
+        return [
+            {
+                'name': _('Processing Fees'),
+                'code': 'PROFE',
+                'type': 'sale',
+                'color': 11,
+                'sequence': 5,
+                'default_account_id': self.property_account_processing_fees_id.id
+            },
+            {
+                'name': _('Loan Journal'),
+                'code': 'ESP',
+                'type': 'sale',
+                'color': 11,
+                'sequence': 5,
+                'default_account_id': self.property_account_other_fees_id.id
+            },
+            {
+                'name': _('Debit Notes'),
+                'code': 'DEBNT',
+                'type': 'sale',
+                'color': 11,
+                'sequence': 5,
+                'default_account_id': self.property_account_debit_note_id.id
+            },
+            {
+                'name': _('Other Fees'),
+                'code': 'OTHFE',
+                'type': 'sale',
+                'color': 11,
+                'sequence': 5,
+                'default_account_id': self.property_account_other_fees_id.id
+            },
+            {
+                'name': _('Penalty Fee'),
+                'code': 'PNF',
+                'type': 'sale',
+                'color': 11,
+                'sequence': 5,
+                'default_account_id': self.property_account_penalty_fee_id.id
+            },
+            {
+                'name': _('Loan Sales Person Journal'),
+                'code': 'ESPs',
+                'type': 'purchase',
+                'color': 11,
+                'sequence': 5,
+                'default_account_id': self.property_account_other_fees_id.id
+            },
+        ]
+
+
 
 class Company(models.Model):
     _inherit = 'res.company'
@@ -60,8 +125,6 @@ class AccountJournal(models.Model):
         [('text', 'Text'), ('watermark', 'Watermark')], required=True,
         default='text', string="Display Type")
     commission_percentage=fields.Float(string="Commission(%)")
-
-
 
 
 
